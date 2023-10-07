@@ -228,6 +228,18 @@ impl pallet_timestamp::Config for Runtime {
 	type WeightInfo = ();
 }
 
+impl pallet_dao::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = ();
+	type Randomness = RandomnessCollectiveFlip;
+	type MinNameLength = ConstU32<5>;
+	type MaxNameLength = ConstU32<50>;
+	type MaxMembersLength = ConstU32<5>;
+	type DaoNumberGenerator = ConstU8<10>;
+}
+
+impl pallet_insecure_randomness_collective_flip::Config for Runtime {}
+
 /// Existential deposit.
 pub const EXISTENTIAL_DEPOSIT: u128 = 500;
 
@@ -283,9 +295,11 @@ construct_runtime!(
 		Grandpa: pallet_grandpa,
 		Balances: pallet_balances,
 		TransactionPayment: pallet_transaction_payment,
+		RandomnessCollectiveFlip: pallet_insecure_randomness_collective_flip,
 		Sudo: pallet_sudo,
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template,
+		DaoPallet: pallet_dao
 	}
 );
 
